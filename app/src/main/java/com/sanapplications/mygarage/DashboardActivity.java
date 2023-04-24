@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashBoardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
     private Spinner makeSpinner, modelSpinner;
     private List<String> makeList, modelList;
     private Button addButton;
@@ -72,7 +72,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Vehicle vehicle = vehicleAdapter.getItem(position);
-                Toast.makeText(DashBoardActivity.this, "Selected " + vehicle, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "Selected " + vehicle, Toast.LENGTH_SHORT).show();
             }
         });
     }

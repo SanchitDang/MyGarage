@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,22 +25,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-            Intent intent = new Intent(MainActivity.this, DashBoardActivity.class);
+        mUserDatabaseHelper = new UserDatabaseHelper(this);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+
+        if (mUserDatabaseHelper.isUserLoggedIn()) {
+            // User is already logged in, redirect to dashboard
+            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
             startActivity(intent);
-//
-//        mUserDatabaseHelper = new UserDatabaseHelper(this);
-//
-//        if (mUserDatabaseHelper.isUserLoggedIn()) {
-//            // User is already logged in, redirect to dashboard
-//            Intent intent = new Intent(MainActivity.this, DashBoardActivity.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            // User is not logged in, redirect to login page
-//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+            finish();
+        } else {
+            // User is not logged in, redirect to login page
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+            }
+        },1500);
+
+
+
     }
 }
 
