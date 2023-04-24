@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             // User is not logged in, redirect to login page
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+           // Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
             startActivity(intent);
             finish();
         }

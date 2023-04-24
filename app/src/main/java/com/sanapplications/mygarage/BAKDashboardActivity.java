@@ -1,8 +1,5 @@
 package com.sanapplications.mygarage;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +9,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -25,26 +24,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
-public class DashboardActivity extends AppCompatActivity {
+public class BAKDashboardActivity extends AppCompatActivity {
     private Spinner makeSpinner, modelSpinner;
     private List<String> makeList, modelList;
     private Button addButton;
-    private RecyclerView vehicleListView;
+    private ListView vehicleListView;
 
     private VehicleDatabaseHelper databaseHelper;
     private List<Vehicle> vehicleList;
-    private ArrayAdapter<Vehicle> vehicleAdapterdapter;
+    private ArrayAdapter<Vehicle> vehicleAdapter;
 
     private ModelApi modelApi;
-    private RecyclerView recyclerView;
-    private VehicleAdapter vehicleAdapter;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        recyclerView = findViewById(R.id.vehicle_list);
 
 
 // Create Retrofit instance
@@ -69,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity {
                         makeList.add(result.Make_Name);
                     }
                     // Set adapter for make dropdown
-                    ArrayAdapter<String> makeAdapter = new ArrayAdapter<>(DashboardActivity.this, android.R.layout.simple_spinner_dropdown_item, makeList);
+                    ArrayAdapter<String> makeAdapter = new ArrayAdapter<>(BAKDashboardActivity.this, android.R.layout.simple_spinner_dropdown_item, makeList);
                     makeSpinner.setAdapter(makeAdapter);
                 } else {
                     Log.d("API call failed: " , String.valueOf(response.code()));
@@ -99,7 +96,6 @@ public class DashboardActivity extends AppCompatActivity {
         modelList.add("City");
         modelList.add("Brio");
 
-
         ArrayAdapter<String> makeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, makeList);
         makeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         makeSpinner.setAdapter(makeAdapter);
@@ -113,73 +109,80 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String make = makeSpinner.getSelectedItem().toString();
                 String model = modelSpinner.getSelectedItem().toString();
-                Vehicle vehicle = new Vehicle(make, model);
-                long id = databaseHelper.addVehicle(vehicle);
-                vehicle.setId(id);
-                //vehicleAdapter.add(vehicle);
-                //vehicleAdapter.notifyDataSetChanged();
+              //  Vehicle vehicle = new Vehicle(make, model);
+              //  long id = databaseHelper.addVehicle(vehicle);
+              //  vehicle.setId(id);
+              //  vehicleAdapter.add(vehicle);
+                vehicleAdapter.notifyDataSetChanged();
+            }
+        });
+
+        databaseHelper = new VehicleDatabaseHelper(this);
+        vehicleList = databaseHelper.getAllVehicles();
+        vehicleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, vehicleList);
+        vehicleListView.setAdapter(vehicleAdapter);
 
 
 
-                //Get Next DropBox value
+
+        //vehicleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        vehicleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Vehicle vehicle = vehicleAdapter.getItem(position);
+//                Toast.makeText(DashboardActivity.this, "Selected " + vehicle, Toast.LENGTH_SHORT).show();
+//            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("we3", "aaaaaaaaaaaaaaaappppiiii");
 
-                // int makeId = makeList.get(position).getMakeId();
-                //int makeId = 10908;
-                // Make the API request to get the car models for the selected make
-                //Call<ModelResponse> call = modelApi.getModels(makeId);
-                Call<ModelResponse> call = modelApi.getModels();
-                call.enqueue(new Callback<ModelResponse>() {
-                    @Override
-                    public void onResponse(Call<ModelResponse> call, Response<ModelResponse> response) {
-                        if (response.isSuccessful()) {
-                            modelList.clear();
-                            ModelResponse modelResponse = response.body();
 
-                            List<ModelResult> models = modelResponse.results;
+                        // int makeId = makeList.get(position).getMakeId();
+                        //int makeId = 10908;
+                        // Make the API request to get the car models for the selected make
+                        //Call<ModelResponse> call = modelApi.getModels(makeId);
+                        Call<ModelResponse> call = modelApi.getModels();
+                        call.enqueue(new Callback<ModelResponse>() {
+                            @Override
+                            public void onResponse(Call<ModelResponse> call, Response<ModelResponse> response) {
+                                if (response.isSuccessful()) {
+                                    modelList.clear();
+                                    ModelResponse modelResponse = response.body();
 
-                            Log.d("we3", String.valueOf(modelResponse));
-                            Log.d("we3", String.valueOf(modelResponse.message));
+                                    List<ModelResult> models = modelResponse.results;
+
+                                    Log.d("we3", String.valueOf(modelResponse));
+                                    Log.d("we3", String.valueOf(modelResponse.message));
 
 //                                    for (Model model : models) {
 //                                        modelList.add(model.getCarName());
 //                                    }
 //                                    modelAdapter.notifyDataSetChanged();
 
-                            if (models != null && models.size() > 0) {
-                                ModelResult model = models.get(0);
-                                modelList.add(model.getModel_Name());
-                            } else {
-                                Toast.makeText(DashboardActivity.this, "No car models found", Toast.LENGTH_SHORT).show();
+                                    if (models != null && models.size() > 0) {
+                                        ModelResult model = models.get(0);
+                                        modelList.add(model.getModel_Name());
+                                    } else {
+                                        Toast.makeText(BAKDashboardActivity.this, "No car models found", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } else {
+                                    Toast.makeText(BAKDashboardActivity.this, "Unable to get car models", Toast.LENGTH_SHORT).show();
+                                }
                             }
 
-                        } else {
-                            Toast.makeText(DashboardActivity.this, "Unable to get car models", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ModelResponse> call, Throwable t) {
-                        Toast.makeText(DashboardActivity.this, "Failed to get car models: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                            @Override
+                            public void onFailure(Call<ModelResponse> call, Throwable t) {
+                                Toast.makeText(BAKDashboardActivity.this, "Failed to get car models: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
             }
+
         });
-
-        databaseHelper = new VehicleDatabaseHelper(this);
-        vehicleList = databaseHelper.getAllVehicles();
-
-        // List View
-        //vehicleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, vehicleList);
-        //vehicleListView.setAdapter(vehicleAdapter);
-
-        // Recycler View
-        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleList, this);
-        recyclerView.setAdapter(vehicleAdapter);
-
     }
 
 
@@ -336,7 +339,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         public static Retrofit getRetrofitInstance() {
             if (retrofit == null) {
-                retrofit = new retrofit2.Retrofit.Builder()
+                retrofit = new Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
