@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Helper;
 
 import android.content.ContentValues;
 import android.content.Context;

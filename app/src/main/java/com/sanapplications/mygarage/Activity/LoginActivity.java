@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.sanapplications.mygarage.R;
+import com.sanapplications.mygarage.Helper.UserDatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Model;
 
 public class Vehicle {
     private long id;

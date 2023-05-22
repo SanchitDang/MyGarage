@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.sanapplications.mygarage.R;
+import com.sanapplications.mygarage.Model.Vehicle;
 
 import java.util.List;
 
@@ -59,6 +62,9 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
         return vehicleList.size();
     }
 
+    public void add(Vehicle vehicle) {
+        vehicleList.add(vehicle);
+    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

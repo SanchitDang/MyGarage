@@ -1,10 +1,12 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Helper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.sanapplications.mygarage.Model.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;

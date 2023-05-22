@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.sanapplications.mygarage;
+package com.sanapplications.mygarage.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.sanapplications.mygarage.R;
+import com.sanapplications.mygarage.Helper.UserDatabaseHelper;
 
 public class SignupActivity extends AppCompatActivity {
 
