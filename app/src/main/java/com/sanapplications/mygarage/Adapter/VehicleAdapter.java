@@ -11,19 +11,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sanapplications.mygarage.Helper.VehicleDatabaseHelper;
 import com.sanapplications.mygarage.R;
 import com.sanapplications.mygarage.Model.VehicleModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHolder> {
 
+    private VehicleDatabaseHelper databaseHelper;
     private List<VehicleModel> vehicleModelList;
     private Context context;
+
 
     public VehicleAdapter(List<VehicleModel> vehicleModelList, Context context) {
         this.vehicleModelList = vehicleModelList;
         this.context = context;
+        databaseHelper = new VehicleDatabaseHelper(context);
     }
 
     public VehicleAdapter() {
@@ -50,11 +57,20 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
         // Set click listeners for buttons
         holder.editButton.setOnClickListener(v -> {
             // Handle edit button click
+
         });
 
         holder.deleteButton.setOnClickListener(v -> {
             // Handle delete button click
 
+            VehicleModel vehicleModell = vehicleModelList.get(position);
+            if (vehicleModell != null) {
+                long id = vehicleModel.getId();
+                databaseHelper.removeVehicle(vehicleModell);
+                vehicleModelList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, vehicleModelList.size());
+            }
         });
     }
 
@@ -80,6 +96,11 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
             editButton = itemView.findViewById(R.id.edit_button);
             deleteButton = itemView.findViewById(R.id.delete_button);
         }
+    }
+
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
 

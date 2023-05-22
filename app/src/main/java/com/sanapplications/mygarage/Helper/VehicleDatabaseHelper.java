@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 import com.sanapplications.mygarage.Model.VehicleModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +43,30 @@ public class VehicleDatabaseHelper extends SQLiteOpenHelper {
         values.put("model", vehicleModel.getModel());
         return db.insert("vehicle", null, values);
     }
+
+    public void removeVehicle(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String selection = "id = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        db.delete("vehicle", selection, selectionArgs);
+    }
+
+    public void removeVehicle(VehicleModel vehicleModel) {
+        SQLiteDatabase db = getWritableDatabase();
+        String selection = "make = ? AND model = ?";
+        String[] selectionArgs = { vehicleModel.getMake(), vehicleModel.getModel() };
+        db.delete("vehicle", selection, selectionArgs);
+    }
+
+    public long addVehicleWithImage(VehicleModel vehicleModel, byte[] imageBytes) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("make", vehicleModel.getMake());
+        values.put("model", vehicleModel.getModel());
+        values.put("image", imageBytes);
+        return db.insert("vehicle", null, values);
+    }
+
 
     public List<VehicleModel> getAllVehicles() {
         SQLiteDatabase db = getReadableDatabase();

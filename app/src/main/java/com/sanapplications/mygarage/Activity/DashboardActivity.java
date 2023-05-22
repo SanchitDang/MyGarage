@@ -3,6 +3,7 @@ package com.sanapplications.mygarage.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,18 +37,12 @@ import retrofit2.http.Path;
 
 public class DashboardActivity extends AppCompatActivity {
     private Spinner makeSpinner, modelSpinner;
-    private List<String> makeList, modelList;
     private Button addButton;
     private RecyclerView vehicleListView;
-
     private VehicleDatabaseHelper databaseHelper;
     private List<VehicleModel> vehicleModelList;
-    private ArrayAdapter<VehicleModel> vehicleAdapterdapter;
-
-    private ModelApi modelApi;
     private RecyclerView recyclerView;
     private VehicleAdapter vehicleAdapter;
-
     private String selectedCarModelId;
 
 
@@ -57,7 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         recyclerView = findViewById(R.id.vehicle_list);
 
-
         makeSpinner = findViewById(R.id.make_spinner);
         modelSpinner = findViewById(R.id.model_spinner);
         addButton = findViewById(R.id.add_button);
@@ -66,7 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
         databaseHelper = new VehicleDatabaseHelper(this);
         vehicleModelList = databaseHelper.getAllVehicles();
 
-        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleModelList, this);
+        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleModelList, DashboardActivity.this);
+        vehicleAdapter.setContext(this);
         recyclerView.setAdapter(vehicleAdapter);
 
 
@@ -211,13 +206,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
         return ""; // Return an empty string if no underscore is found or it is at the end of the input.
     }
-
-
-
-
-
-
-
 
 
     public class RetrofitClientInstance {
