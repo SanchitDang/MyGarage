@@ -1,13 +1,13 @@
 package com.sanapplications.mygarage.Model;
 
-public class Vehicle {
+public class VehicleModel {
     private long id;
     private String make;
     private String model;
 
-    public Vehicle() {}
+    public VehicleModel() {}
 
-    public Vehicle(String make, String model) {
+    public VehicleModel(String make, String model) {
         this.make = make;
         this.model = model;
     }

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.sanapplications.mygarage.Model.Vehicle;
+import com.sanapplications.mygarage.Model.VehicleModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +32,28 @@ public class VehicleDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long addVehicle(Vehicle vehicle) {
+    public long addVehicle(VehicleModel vehicleModel) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("make", vehicle.getMake());
-        values.put("model", vehicle.getModel());
+        values.put("make", vehicleModel.getMake());
+        values.put("model", vehicleModel.getModel());
         return db.insert("vehicle", null, values);
     }
 
-    public List<Vehicle> getAllVehicles() {
+    public List<VehicleModel> getAllVehicles() {
         SQLiteDatabase db = getReadableDatabase();
-        List<Vehicle> vehicles = new ArrayList<>();
+        List<VehicleModel> vehicleModels = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM vehicle", null);
         if (cursor.moveToFirst()) {
             do {
-                Vehicle vehicle = new Vehicle();
-                vehicle.setId(cursor.getLong(cursor.getColumnIndex("_id")));
-                vehicle.setMake(cursor.getString(cursor.getColumnIndex("make")));
-                vehicle.setModel(cursor.getString(cursor.getColumnIndex("model")));
-                vehicles.add(vehicle);
+                VehicleModel vehicleModel = new VehicleModel();
+                vehicleModel.setId(cursor.getLong(cursor.getColumnIndex("_id")));
+                vehicleModel.setMake(cursor.getString(cursor.getColumnIndex("make")));
+                vehicleModel.setModel(cursor.getString(cursor.getColumnIndex("model")));
+                vehicleModels.add(vehicleModel);
             } while (cursor.moveToNext());
         }
         cursor.close();
-        return vehicles;
+        return vehicleModels;
     }
 }

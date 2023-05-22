@@ -10,11 +10,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
+import com.sanapplications.mygarage.API.MakeApi;
+import com.sanapplications.mygarage.API.ModelApi;
+import com.sanapplications.mygarage.Model.MakeResponse;
+import com.sanapplications.mygarage.Model.MakeResult;
+import com.sanapplications.mygarage.Model.ModelResponse;
+import com.sanapplications.mygarage.Model.ModelResult;
 import com.sanapplications.mygarage.R;
-import com.sanapplications.mygarage.Model.Vehicle;
+import com.sanapplications.mygarage.Model.VehicleModel;
 import com.sanapplications.mygarage.Adapter.VehicleAdapter;
 import com.sanapplications.mygarage.Helper.VehicleDatabaseHelper;
 
@@ -36,8 +41,8 @@ public class DashboardActivity extends AppCompatActivity {
     private RecyclerView vehicleListView;
 
     private VehicleDatabaseHelper databaseHelper;
-    private List<Vehicle> vehicleList;
-    private ArrayAdapter<Vehicle> vehicleAdapterdapter;
+    private List<VehicleModel> vehicleModelList;
+    private ArrayAdapter<VehicleModel> vehicleAdapterdapter;
 
     private ModelApi modelApi;
     private RecyclerView recyclerView;
@@ -59,9 +64,9 @@ public class DashboardActivity extends AppCompatActivity {
         vehicleListView = findViewById(R.id.vehicle_list);
 
         databaseHelper = new VehicleDatabaseHelper(this);
-        vehicleList = databaseHelper.getAllVehicles();
+        vehicleModelList = databaseHelper.getAllVehicles();
 
-        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleList, this);
+        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleModelList, this);
         recyclerView.setAdapter(vehicleAdapter);
 
 
@@ -183,11 +188,11 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String make = makeSpinner.getSelectedItem().toString();
                 String model = modelSpinner.getSelectedItem().toString();
-                Vehicle vehicle = new Vehicle(make, model);
-                long id = databaseHelper.addVehicle(vehicle);
-                vehicle.setId(id);
+                VehicleModel vehicleModel = new VehicleModel(make, model);
+                long id = databaseHelper.addVehicle(vehicleModel);
+                vehicleModel.setId(id);
 
-                vehicleList.add(vehicle);
+                vehicleModelList.add(vehicleModel);
                 vehicleAdapter.notifyDataSetChanged();
 
             }
@@ -208,153 +213,12 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    public class MakeResponse {
-        private int Count;
-        private String Message;
-        private List<MakeResult> Results;
 
-        // Getters and setters
-        private int count;
-        private String message;
-        private Object searchCriteria;
 
-        public int getCount() {
-            return count;
-        }
 
-        public void setCount(int count) {
-            this.count = count;
-        }
 
-        public String getMessage() {
-            return message;
-        }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
 
-        public Object getSearchCriteria() {
-            return searchCriteria;
-        }
-
-        public void setSearchCriteria(Object searchCriteria) {
-            this.searchCriteria = searchCriteria;
-        }
-
-    }
-
-    public class MakeResult {
-//        private int Make_ID;
-        private String Make_Name;
-//
-//        // Getters and setters
-
-        @SerializedName("Make_ID")
-        private int makeId;
-        @SerializedName("Make_Name")
-        //private String makeName;
-
-        public int getMakeId() {
-            return makeId;
-        }
-
-        public String getMakeName() {
-            //return makeName;
-            return Make_Name;
-        }
-    }
-
-    public interface MakeApi {
-        @GET("/api/vehicles/getallmakes?format=json")
-        Call<MakeResponse> getMakes();
-
-    }
-
-    public class ModelResponse {
-        private int Count;
-        private String Message;
-        private String SearchCriteria;
-        private List<ModelResult> Results;
-
-        public int getCount() {
-            return Count;
-        }
-
-        public String getMessage() {
-            return Message;
-        }
-
-        public String getSearchCriteria() {
-            return SearchCriteria;
-        }
-
-        public List<ModelResult> getResults() {
-            return Results;
-        }
-
-        public void setCount(int count) {
-            this.Count = count;
-        }
-
-        public void setMessage(String message) {
-            this.Message = message;
-        }
-
-        public void setSearchCriteria(String searchCriteria) {
-            this.SearchCriteria = searchCriteria;
-        }
-
-        public void setResults(List<ModelResult> results) {
-            this.Results = results;
-        }
-    }
-
-    public class ModelResult {
-    private int Make_ID;
-    private String Make_Name;
-    private int Model_ID;
-    private String Model_Name;
-
-    public int getMake_ID() {
-        return Make_ID;
-    }
-
-    public String getMake_Name() {
-        return Make_Name;
-    }
-
-    public int getModel_ID() {
-        return Model_ID;
-    }
-
-    public String getModel_Name() {
-        return Model_Name;
-    }
-
-    public void setMake_ID(int make_ID) {
-        Make_ID = make_ID;
-    }
-
-    public void setMake_Name(String make_Name) {
-        Make_Name = make_Name;
-    }
-
-    public void setModel_ID(int model_ID) {
-        Model_ID = model_ID;
-    }
-
-    public void setModel_Name(String model_Name) {
-        Model_Name = model_Name;
-    }
-}
-
-    public interface ModelApi {
-//        @GET("api/vehicles/GetModelsForMakeId/10005?format=json")
-//        Call<ModelResponse> getModels();
-@GET("api/vehicles/GetModelsForMakeId/{id}?format=json")
-Call<ModelResponse> getModels(@Path("id") String id);
-    }
 
     public class RetrofitClientInstance {
 

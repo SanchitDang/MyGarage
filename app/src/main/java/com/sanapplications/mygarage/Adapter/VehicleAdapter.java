@@ -12,17 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sanapplications.mygarage.R;
-import com.sanapplications.mygarage.Model.Vehicle;
+import com.sanapplications.mygarage.Model.VehicleModel;
 
 import java.util.List;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHolder> {
 
-    private List<Vehicle> vehicleList ;
+    private List<VehicleModel> vehicleModelList;
     private Context context;
 
-    public VehicleAdapter(List<Vehicle> vehicleList, Context context) {
-        this.vehicleList = vehicleList;
+    public VehicleAdapter(List<VehicleModel> vehicleModelList, Context context) {
+        this.vehicleModelList = vehicleModelList;
         this.context = context;
     }
 
@@ -40,9 +40,9 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Vehicle vehicle = vehicleList.get(position);
-        holder.vehicleName.setText(vehicle.getMake() + " " + vehicle.getModel());
-        holder.vehicleYear.setText(vehicle.getModel());
+        VehicleModel vehicleModel = vehicleModelList.get(position);
+        holder.vehicleName.setText(vehicleModel.getMake() + " " + vehicleModel.getModel());
+        holder.vehicleYear.setText(vehicleModel.getModel());
 
         // Load the vehicle image using a third-party library like Glide or Picasso
         //Glide.with(context).load(vehicle.getImageUrl()).into(holder.vehicleImage);
@@ -60,7 +60,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return vehicleList.size();
+        return vehicleModelList.size();
     }
 
 
