@@ -10,6 +10,8 @@ import android.os.Handler;
 import com.sanapplications.mygarage.R;
 import com.sanapplications.mygarage.Helper.UserDatabaseHelper;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private UserDatabaseHelper mUserDatabaseHelper;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         mUserDatabaseHelper = new UserDatabaseHelper(this);
 

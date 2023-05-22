@@ -54,6 +54,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
 
         holder.deleteButton.setOnClickListener(v -> {
             // Handle delete button click
+
         });
     }
 
@@ -62,9 +63,6 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
         return vehicleList.size();
     }
 
-    public void add(Vehicle vehicle) {
-        vehicleList.add(vehicle);
-    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

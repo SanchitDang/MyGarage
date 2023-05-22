@@ -58,6 +58,12 @@ public class DashboardActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         vehicleListView = findViewById(R.id.vehicle_list);
 
+        databaseHelper = new VehicleDatabaseHelper(this);
+        vehicleList = databaseHelper.getAllVehicles();
+
+        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleList, this);
+        recyclerView.setAdapter(vehicleAdapter);
+
 
         // STATIC IMPLEMENTATION OF SPINNER (DROP BOX)
 //        makeList = new ArrayList<>();
@@ -83,6 +89,8 @@ public class DashboardActivity extends AppCompatActivity {
         // DYNAMIC FROM API
 
         // Create Retrofit instance
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://vpic.nhtsa.dot.gov")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -117,7 +125,6 @@ public class DashboardActivity extends AppCompatActivity {
                 Log.d("API call failed: ", t.getMessage());
             }
         });
-
 
 
 
@@ -180,21 +187,14 @@ public class DashboardActivity extends AppCompatActivity {
                 long id = databaseHelper.addVehicle(vehicle);
                 vehicle.setId(id);
 
-                //vehicleAdapter.add(vehicle);
-                //vehicleAdapter.notifyDataSetChanged();
+                vehicleList.add(vehicle);
+                vehicleAdapter.notifyDataSetChanged();
 
             }
         });
 
 
 
-        databaseHelper = new VehicleDatabaseHelper(this);
-        vehicleList = databaseHelper.getAllVehicles();
-
-
-        // Recycler View
-        VehicleAdapter vehicleAdapter = new VehicleAdapter(vehicleList, this);
-        recyclerView.setAdapter(vehicleAdapter);
 
     }
 
